@@ -1,4 +1,7 @@
-#include "PaymentTransaction.hpp"
+#include "..\include\PaymentTransaction.hpp"
+
+#include <iomanip>
+#include <sstream>
 #include <stdexcept>
 
 PaymentTransaction::PaymentTransaction(const std::string& p_id,
@@ -16,7 +19,10 @@ PaymentTransaction::PaymentTransaction(const std::string& p_id,
   if (m_id.empty()) {
     throw std::invalid_argument("ID connot be empty!");
   }
+
+  m_createdAt = std::chrono::system_clock::now();
 }
+
 std::string PaymentTransaction::getId() const {
   return m_id;
 }
@@ -35,6 +41,17 @@ std::string PaymentTransaction::getIdempotencyKey() const {
 
 TransactionStatus PaymentTransaction::getStatus() const {
   return m_status;
+}
+
+std::string PaymentTransaction::getCreatedAt() const {
+  std::time_t seconds = std::chrono::system_clock::to_time_t(m_createdAt);
+
+  std::tm temp;
+  localtime_s(&temp, &seconds);
+
+  std::stringstream ss;
+  ss << std::put_time(&temp, "%Y-%m-%d %H:%M:%S");
+  return ss.str();
 }
 
 void PaymentTransaction::setStatus(TransactionStatus p_status) {

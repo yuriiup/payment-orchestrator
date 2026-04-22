@@ -1,0 +1,17 @@
+*.exe
+*.out
+*.app
+
+*.o
+*.obj
+
+.vscode/
+.vs/
+out/
+build/
+bin/
+
+*.log
+*.tmp
+
+.clang-format
